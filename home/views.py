@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import *
+from .models import Staff
 from django.http import HttpResponse
 
 # Create your views here.
@@ -26,7 +26,10 @@ def service(request):
 
 
 def team(request):
-    return render(request, template_name="team.html")
+    context = {
+    "teams": Staff.objects.all(),
+    }
+    return render(request, "team.html", context)
 
 
 def testimonial(request):
