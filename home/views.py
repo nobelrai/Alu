@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Staff
+from .models import Staff, Items
 from django.http import HttpResponse
 
 # Create your views here.
@@ -18,7 +18,10 @@ def booking(request):
 
 
 def menu(request):
-    return render(request, template_name="menu.html")
+    context = {
+        "items": Items.objects.all()
+    }
+    return render(request, "menu.html", context)
 
 
 def service(request):
