@@ -6,7 +6,8 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, template_name="index.html")
+    context = {"items": Items.objects.all(), "teams": Staff.objects.all()}
+    return render(request, "index.html", context)
 
 
 def about(request):
