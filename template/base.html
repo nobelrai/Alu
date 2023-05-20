@@ -49,7 +49,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="" class="navbar-brand p-0">
                     <h1 class="text-primary m-0"><i class="fa fa-utensils me-4"></i>Alu</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                     <img src="{% static 'img/logo.png' %}" alt="Logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -71,6 +71,7 @@
                         <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
                     </div>
                     <a href="{% url 'booking' %}" class="btn btn-primary py-2 px-4">Book A Table</a>
+                    <a href = "{% url 'logout' %}" class = "btn btn-warning" style="float: right">Log Out</a>
                 </div>
             </nav>
 
@@ -83,7 +84,7 @@
                             <a href="{% url 'booking' %}" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Book A Table</a>
                         </div>
                         <div class="col-lg-6 text-center text-lg-end overflow-hidden">
-                            <img class="img-fluid" src="media/img/hero.png" alt="">
+                            <img class="img-fluid" src="img/hero.png" alt="">
                         </div>
                     </div>
                 </div>

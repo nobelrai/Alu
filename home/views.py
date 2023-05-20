@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Staff, Items
+from django.shortcuts import render, redirect
+from .models import Staff, Items, Testimonial
 from django.http import HttpResponse
 
 # Create your views here.
@@ -37,6 +37,12 @@ def team(request):
 
 
 def testimonial(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        message = request.POST.get("message")
+        Testimonial.objects.create(name=name, message=message)
+        return redirect("testimonial")
+    context = {"title": "testimonial", "testimonials": Testimonial.objects.all()}
     return render(request, template_name="testimonial.html")
 
 

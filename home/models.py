@@ -22,5 +22,8 @@ class Items(models.Model):
 
 
 class Testimonial(models.Model):
-    pass
+    name = models.CharField(max_length=20, null=True)
+    message = models.TextField(max_length=100, null=True)
 
+    def __str__(self):
+        return f"{self.name}"
