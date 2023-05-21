@@ -9,5 +9,5 @@ urlpatterns=[
     path("team/", team, name="team"),
     path("contact/", contact, name="contact"),
     path("testimonial", testimonial, name="testimonial"),
-    path("", index, name="index"),
+    path("index/", index, name="index"),
 ]

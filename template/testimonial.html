@@ -3,26 +3,25 @@
 
         <form method="post" action="{% url 'testimonial' %}"enctype = "multipart/form-data">
             {% csrf_token %}
-            {% for testimonial in testimonials %}
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="name" placeholder="Your Name">
-                                            <label for="name">{{ testimonial.name }}</label>
+                                            <label for="name">Name</label>
                                         </div>
                                     </div>
                                         <div class="form-floating">
                                             <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 150px"></textarea>
-                                            <label for="message">{{ testimonial.message }}</label>
+                                            <label for="message">Message</label>
                                         </div>
                                     </div>
-            {% endfor %}
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
                                     </div>
                                 </div>
                             </form>
         <!-- Testimonial Start -->
+
         <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
             <div class="container">
                 <div class="text-center">
@@ -30,53 +29,26 @@
                     <h1 class="mb-5">Our Clients Say!!!</h1>
                 </div>
                 <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
+                    {% for testimonial in testimonials %}
+                           <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="team-item text-center rounded overflow-hidden">
+                            <div class="rounded-circle overflow-hidden m-4">
+                                <img class="img-fluid" src="img/team-1.jpg" alt="">
+                            </div>
+                            <h5 class="mb-0">{{ testimonial.message }}</h5>
+                            <small>{{ testimonial.name }}</small>
+                            <div class="d-flex justify-content-center mt-3">
+                                <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-square btn-primary mx-1" href=""><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-2.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-3.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-transparent border rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-4.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
+
         <!-- Testimonial End -->
         
 {% endblock %}

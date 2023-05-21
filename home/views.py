@@ -43,7 +43,7 @@ def testimonial(request):
         Testimonial.objects.create(name=name, message=message)
         return redirect("testimonial")
     context = {"title": "testimonial", "testimonials": Testimonial.objects.all()}
-    return render(request, template_name="testimonial.html")
+    return render(request, "testimonial.html", context)
 
 
 def contact(request):

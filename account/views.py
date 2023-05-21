@@ -14,7 +14,7 @@ def login_user(request):
         user = authenticate(request, username=un, password=pw)
         if user is not None: #if user in authenticated
             login(request, user)
-            return redirect('home')
+            return redirect('index')
         else:
             messages.error(request, "Username or password incorrect")
     return render(request, "account/login.html")
