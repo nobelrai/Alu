@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    context = {"items": Items.objects.all(), "teams": Staff.objects.all()}
+    context = {"items": Items.objects.all(), "teams": Staff.objects.all(), "as": Testimonial.objects.all()}
     return render(request, "index.html", context)
 
 
@@ -40,9 +40,9 @@ def testimonial(request):
     if request.method == "POST":
         name = request.POST.get("name")
         message = request.POST.get("message")
-        Testimonial.objects.create(name=name, message=message)
+        a = Testimonial.objects.create(name=name, message=message)
         return redirect("testimonial")
-    context = {"title": "testimonial", "testimonials": Testimonial.objects.all()}
+    context = {"title": "testimonial", "as": Testimonial.objects.all()}
     return render(request, "testimonial.html", context)
 
 
