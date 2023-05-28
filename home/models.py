@@ -33,4 +33,9 @@ class Testimonial(models.Model):
 
 
 class Booking(models.Model):
+
     pass
+
+class nothing(models.model):
+    pass
+
