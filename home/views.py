@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Staff, Items, Testimonial
+from .models import Staff, Items, Testimonial, Booking
 from django.http import HttpResponse
 
 # Create your views here.
@@ -15,6 +15,14 @@ def about(request):
 
 
 def booking(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        datetime = request.POST.get("datetime")
+        no_of_people = request.POST.get("no_of_people")
+        special_request = request.POST.get("special_request")
+        Booking.objects.create(name=name, email=email, datetime=datetime, no_of_people=no_of_people, special_request=special_request)
+        return redirect("booking")
     return render(request, template_name="booking.html")
 
 
@@ -40,7 +48,7 @@ def testimonial(request):
     if request.method == "POST":
         name = request.POST.get("name")
         message = request.POST.get("message")
-        a = Testimonial.objects.create(name=name, message=message)
+        Testimonial.objects.create(name=name, message=message)
         return redirect("testimonial")
     context = {"title": "testimonial", "as": Testimonial.objects.all()}
     return render(request, "testimonial.html", context)
