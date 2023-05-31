@@ -21,9 +21,15 @@ def booking(request):
         datetime = request.POST.get("datetime")
         no_of_people = request.POST.get("no_of_people")
         special_request = request.POST.get("special_request")
-        Booking.objects.create(name=name, email=email, datetime=datetime, no_of_people=no_of_people, special_request=special_request)
+        Booking.objects.create(name=name, email=email, datetime=datetime, no_of_people=no_of_people,
+                               special_request=special_request)
         return redirect("booking")
     return render(request, template_name="booking.html")
+
+
+def staff_page(request):
+    context = {"booking_infos": Booking.objects.all()}
+    return render(request, "staff-page.html", context)
 
 
 def menu(request):

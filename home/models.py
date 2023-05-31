@@ -33,11 +33,11 @@ class Testimonial(models.Model):
 
 
 class Booking(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
-    datetime = models.DateTimeField()
-    no_of_people = models.IntegerField()
-    special_request = models.TextField(max_length=200)
+    name = models.CharField(max_length=50, null=True)
+    email = models.EmailField(max_length=50, null=True)
+    datetime = models.DateTimeField( auto_now_add=True,null=True)
+    no_of_people = models.IntegerField( null=True)
+    special_request = models.TextField(max_length=200, null=True)
 
     def __str__(self):
         return f"{self.name}"
