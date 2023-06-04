@@ -19,6 +19,7 @@ class Items(models.Model):
     region = models.CharField(max_length=20, null=True)
     price = models.IntegerField()
     description = models.TextField(max_length=200)
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
 
     def __str__(self):
         return f"{self.name}"
@@ -43,5 +44,11 @@ class Booking(models.Model):
         return f"{self.name}"
 
 
-class nothing(models.Model):
-    pass
+class Contact(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    subject = models.CharField(max_length=100)
+    message = models.TextField(max_length=300)
+
+    def __str__(self):
+        return f"{self.name}"

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Staff, Items, Testimonial, Booking
+from .models import Staff, Items, Testimonial, Booking, Contact
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
@@ -27,8 +28,9 @@ def booking(request):
     return render(request, template_name="booking.html")
 
 
+@login_required
 def staff_page(request):
-    context = {"booking_infos": Booking.objects.all()}
+    context = {"booking_infos": Booking.objects.all(), "contacts": Contact.objects.all()}
     return render(request, "staff-page.html", context)
 
 
@@ -61,4 +63,20 @@ def testimonial(request):
 
 
 def contact(request):
-    return render(request, template_name="contact.html")
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        subject = request.POST.get("subject")
+        message = request.POST.get("message")
+        Contact.objects.create(name=name, email=email, subject=subject, message=message)
+        return redirect("contact")
+    context = {"title": "contact"}
+    return render(request, "contact.html", context)
+
+
+def dining_table(request):
+    return render(request, template_name="dining-table.html")
+
+
+def checkout(request):
+    return render(request, template_name="checkout.html")
