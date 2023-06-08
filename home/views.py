@@ -80,3 +80,33 @@ def dining_table(request):
 
 def checkout(request):
     return render(request, template_name="checkout.html")
+
+
+def delete(request, id):
+
+    try:
+        booking = Booking.objects.get(id=id)
+    except Booking.DoesNotExist:
+        return redirect('staff_page')
+    context = {
+        "title": "delete", "booking": booking,
+    }
+    if request.method == "POST":
+        Booking.objects.filter(id=id).delete()
+        return redirect('staff_page')
+    return render(request, "delete.html", context)
+
+
+def delete_contact(request, id):
+
+    try:
+        contact = Contact.objects.get(id=id)
+    except Contact.DoesNotExist:
+        return redirect('staff_page')
+    context = {
+        "title": "delete", "contact": contact,
+    }
+    if request.method == "POST":
+        Contact.objects.filter(id=id).delete()
+        return redirect('staff_page')
+    return render(request, "delete-contact.html", context)

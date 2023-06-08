@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import index, about, booking, menu, service, team, testimonial, contact, staff_page, dining_table, checkout
+from .views import index, about, booking, menu, service, team, testimonial,\
+    contact, staff_page, dining_table, checkout, delete, delete_contact,login_user
 
 urlpatterns=[
     path("dining-table/", dining_table, name="dining_table"),
@@ -12,5 +13,8 @@ urlpatterns=[
     path("contact/", contact, name="contact"),
     path("testimonial/", testimonial, name="testimonial"),
     path("checkout/", checkout, name="checkout"),
+    path("delete/<int:id>/", delete, name="delete"),
+    path("delete-contact/<int:id>/", delete_contact, name="delete_contact"),
+    path('login', login_user, name='login'),
     path("", index, name="index"),
 ]

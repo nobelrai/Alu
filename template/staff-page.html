@@ -17,6 +17,11 @@
                             <h5 class="mb-0">Date time = {{ booking_info.datetime }}</h5>
                             <h5 class="mb-0">No of people = {{ booking_info.no_of_people }}</h5>
                             <h5 class="mb-0">Special request = {{ booking_info.special_request }}</h5>
+                            <div class="d-flex justify-content-center mt-3">
+                                    <div class="col-12">
+                                        <a href="{% url 'delete' booking_info.id %}" class="btn btn-danger">Delete</a>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                      {% endfor %}
@@ -40,6 +45,11 @@
                             <h5 class="mb-0">Email = {{ contact.email }}</h5>
                             <h5 class="mb-0">Subject = {{ contact.subject }}</h5>
                             <h5 class="mb-0">Message = {{ contact.message }}</h5>
+                            <div class="d-flex justify-content-center mt-3">
+                                    <div class="col-12">
+                                        <a href="{% url 'delete_contact' contact.id %}" class="btn btn-danger">Delete</a>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                      {% endfor %}
