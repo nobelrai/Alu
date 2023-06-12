@@ -2,13 +2,29 @@ from django.db import models
 
 # # Create your models here.
 
+GENDER_CHOICES = (
+   ('M', 'Male'),
+   ('F', 'Female')
+)
+
 
 class Staff(models.Model):
     name = models.CharField(max_length=20)
+    gender = models.BooleanField(choices=GENDER_CHOICES, max_length=50, null=True)
     designation = models.CharField(max_length=20)
     facebook = models.CharField(max_length=200, null=True)
     linkedin = models.CharField(max_length=200, null=True)
     instagram = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Customer(models.Model):
+    name = models.CharField(max_length=20)
+    address = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    phone_number = models.CharField(max_length=12)
 
     def __str__(self):
         return f"{self.name}"
