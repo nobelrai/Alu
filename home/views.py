@@ -7,7 +7,10 @@ from django.http import HttpResponse
 
 
 def index(request):
-    context = {"items": Items.objects.all(), "teams": Staff.objects.all(), "as": Testimonial.objects.all()}
+    context = {"items": Items.objects.all(),
+               "teams": Staff.objects.all(),
+               "as": Testimonial.objects.all()
+               }
     return render(request, "index.html", context)
 
 
@@ -22,15 +25,20 @@ def booking(request):
         datetime = request.POST.get("datetime")
         no_of_people = request.POST.get("no_of_people")
         special_request = request.POST.get("special_request")
-        Booking.objects.create(name=name, email=email, datetime=datetime, no_of_people=no_of_people,
-                               special_request=special_request)
+        Booking.objects.create(name=name, email=email,
+                               datetime=datetime,
+                               no_of_people=no_of_people,
+                               special_request=special_request
+                               )
         return redirect("booking")
     return render(request, template_name="booking.html")
 
 
 @login_required
 def staff_page(request):
-    context = {"booking_infos": Booking.objects.all(), "contacts": Contact.objects.all()}
+    context = {"booking_infos": Booking.objects.all(),
+               "contacts": Contact.objects.all()
+               }
     return render(request, "staff-page.html", context)
 
 
@@ -56,7 +64,9 @@ def testimonial(request):
     if request.method == "POST":
         name = request.POST.get("name")
         message = request.POST.get("message")
-        Testimonial.objects.create(name=name, message=message)
+        Testimonial.objects.create(name=name,
+                                   message=message
+                                   )
         return redirect("testimonial")
     context = {"title": "testimonial", "as": Testimonial.objects.all()}
     return render(request, "testimonial.html", context)
@@ -68,7 +78,11 @@ def contact(request):
         email = request.POST.get("email")
         subject = request.POST.get("subject")
         message = request.POST.get("message")
-        Contact.objects.create(name=name, email=email, subject=subject, message=message)
+        Contact.objects.create(name=name,
+                               email=email,
+                               subject=subject,
+                               message=message
+                               )
         return redirect("contact")
     context = {"title": "contact"}
     return render(request, "contact.html", context)
