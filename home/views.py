@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Staff, Items, Testimonial, Booking, Contact
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 
 # Create your views here.
@@ -34,7 +35,8 @@ def booking(request):
     return render(request, template_name="booking.html")
 
 
-@login_required
+@login_required(login_url='login')
+@staff_member_required
 def staff_page(request):
     context = {"booking_infos": Booking.objects.all(),
                "contacts": Contact.objects.all()
