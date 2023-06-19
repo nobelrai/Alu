@@ -90,14 +90,6 @@ def contact(request):
     return render(request, "contact.html", context)
 
 
-def dining_table(request):
-    return render(request, template_name="dining-table.html")
-
-
-def checkout(request):
-    return render(request, template_name="checkout.html")
-
-
 def delete(request, id):
 
     try:
