@@ -31,6 +31,46 @@
 
     <!-- Template Stylesheet -->
     <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        function getCookie(name){
+            var cookieArr = document.cookie.split(";");
+            for(var i=0; i<cookieArr.length; i++){
+                var cookiePair = cookieArr[i].split("=")
+                if(name === cookiePair[0].trim()){
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            return null;
+        }
+
+        var cart = JSON.parse(getCookie('cart'))
+        if(cart == undefined){
+            cart = {}
+            document.cookie = "cart= "+JSON.stringify(cart)+";domain=;path=/"
+            console.log("Cart set", cart)
+        }
+
+    </script>
 </head>
 <body>
     <div class="container-xxl bg-white p-0">
@@ -73,6 +113,7 @@
                     </div>
                     <a href="{% url 'booking' %}" class="btn btn-primary py-2 px-4">Book A Table</a>
                     <a href = "{% url 'login' %}" class = "btn btn-warning" style="float: right">Log In</a>
+                    <a href = "{% url 'cart' %}" class = "btn btn-warning" style="float: right">cart</a>
                     <a href = "{% url 'register' %}" class = "btn btn-warning" style="float: right">Sign up</a>
                     <a href = "{% url 'logout' %}" class = "btn btn-warning" style="float: right">Log Out</a>
                 </div>
@@ -184,6 +225,7 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 </body>
 
 </html>

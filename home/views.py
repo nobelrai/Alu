@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Staff, Items, Testimonial, Booking, Contact
+from .models import Staff, Items, Testimonial, Booking, Contact, OrderItem, Customer, Order, ShippingAddress
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.http import JsonResponse
+
+import json
+import datetime
 from django.http import HttpResponse
 
 # Create your views here.
@@ -118,3 +122,165 @@ def delete_contact(request, id):
         Contact.objects.filter(id=id).delete()
         return redirect('staff_page')
     return render(request, "delete-contact.html", context)
+
+
+def cart(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cart_items = order.get_cart_items
+    else:
+        try:
+            c = json.loads(request.COOKIES['cart'])
+        except:
+            c = {}
+        order = {"get_cart_items": 0, "get_cart_total": 0}
+        cart_items = 0
+        items = []
+        for product_id in c:
+            cart_items += c[product_id]['quantity']
+            product = Items.objects.get(id=product_id)
+            total = product.price * c[product_id]['quantity']
+            order["get_cart_total"] += total
+            order["get_cart_items"] += c[product_id]['quantity']
+
+            item = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "imageURL": product.image.url,
+                },
+                "quantity": c[product_id]["quantity"],
+                "get_total": total
+            }
+            items.append(item)
+    context = {"items": items, "order": order, "cart_items":cart_items}
+    return render(request, 'cart.html', context)
+
+
+def checkout(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        items = order.orderitem_set.all()
+        cart_items = order.get_cart_items
+    else:
+        try:
+            c = json.loads(request.COOKIES['cart'])
+        except:
+            c = {}
+        order = {"get_cart_items": 0, "get_cart_total": 0}
+        cart_items = 0
+        items = []
+        for product_id in c:
+            cart_items += c[product_id]['quantity']
+            product = Items.objects.get(id=product_id)
+            total = product.price * c[product_id]['quantity']
+            order["get_cart_total"] += total
+            order["get_cart_items"] += c[product_id]['quantity']
+
+            item = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "image": {"url": product.image.url}
+                },
+                "quantity": c[product_id]["quantity"],
+                "get_total": total
+            }
+            items.append(item)
+    context = {"items": items, "order": order, "cart_items":cart_items}
+    return render(request, 'checkout.html', context)
+
+
+def update_item(request):
+    data = json.loads(request.body)
+    product_id = data['productID']
+    action = data['action']
+
+    customer = request.user.customer
+    product = Items.objects.get(id=product_id)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    order_item, created = OrderItem.objects.get_or_create(product=product, order=order)
+    if action == 'add':
+        order_item.quantity += 1
+    elif action == 'remove':
+        order_item.quantity -= 1
+    order_item.save()
+    if order_item.quantity <= 0:
+        order_item.delete()
+    response = {
+        "message": "Updated Successfully"
+    }
+    return JsonResponse(response)
+
+
+def process_order(request):
+    data = json.loads(request.body)
+    transaction_id = datetime.datetime.now().timestamp()
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    else:
+        name = data['form']['name']
+        email = data['form']['email']
+        try:
+            c = json.loads(request.COOKIES['cart'])
+        except:
+            c = {}
+        o = {"get_cart_items": 0, "get_cart_total": 0}
+        cart_items = 0
+        items = []
+        for product_id in c:
+            cart_items += c[product_id]['quantity']
+            product = Items.objects.get(id=product_id)
+            total = product.price * c[product_id]['quantity']
+            print("order = ", o)
+            o["get_cart_total"] += total
+            o["get_cart_items"] += c[product_id]['quantity']
+
+            item = {
+                "product": {
+                    "id": product.id,
+                    "name": product.name,
+                    "price": product.price,
+                    "imageURL": product.image.url,
+                },
+                "quantity": c[product_id]["quantity"],
+                "get_total": total
+            }
+            items.append(item)
+            customer, created = Customer.objects.get_or_create(email=email)
+            customer.name = name
+            customer.save()
+            order = Order.objects.create(customer=customer, complete=False)
+            for item in items:
+                product = Items.objects.get(id=item['product']['id'])
+                order_item = OrderItem.objects.create(product=product, order=order, quantity=item['quantity'])
+
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+
+    if total == order.get_cart_total:
+        order.complete = True
+    order.save()
+
+    if order.shipping:
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            zipcode=data['shipping']['zipcode']
+        )
+
+    return JsonResponse({
+        "message": "Payment Complete"
+    })
+
