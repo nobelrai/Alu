@@ -97,7 +97,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
-                        <a href="{% url 'index' %}" class="nav-item nav-link active">Home</a>
+                        <a href="{% url 'index' %}" class="nav-item nav-link">Home</a>
                         <a href="{% url 'menu' %}" class="nav-item nav-link">Menu</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
@@ -113,13 +113,11 @@
 
                         <a href="{% url 'staff_page' %}" class="nav-item nav-link">Staff Page</a>
                     </div>
-                    <a href="{% url 'booking' %}" class="btn btn-primary py-2 px-4">Book A Table</a>
-                    <a href = "{% url 'login' %}" class = "btn btn-warning" style="float: right">Log In</a>
-                       <a href="{% url 'cart' %}">
+                    <a href="{% url 'cart' %}">
                     <img src="{% static 'img/cart.png' %}" id="cart-icon"width="40" height="40">
                     <p id="cart-total">{{ cart_items }}</p>
                 </a>
-                    <a href = "{% url 'register' %}" class = "btn btn-warning" style="float: right">Sign up</a>
+        <span class="nav-item nav-link">{{ request.user }}</span>
                     <a href = "{% url 'logout' %}" class = "btn btn-warning" style="float: right">Log Out</a>
                 </div>
             </nav>

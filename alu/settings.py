@@ -136,3 +136,17 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = '/staff/'
 LOGIN_URL = '/login/'
+
+# DEBUG = True
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_HOST_USER = "mailtonobelrai@gmail.com"
+# EMAIL_HOST_PASSWORD = "dhdgeffcwgytztwq"
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# ALLOWED_HOSTS = []
+
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '23470f89cf27a6'
+EMAIL_HOST_PASSWORD = '5cef0686492fce'
+EMAIL_PORT = '2525'

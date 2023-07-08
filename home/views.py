@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Staff, Items, Testimonial, Booking, Contact, OrderItem, Customer, Order, ShippingAddress
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import JsonResponse
 
 import json
@@ -283,4 +285,20 @@ def process_order(request):
     return JsonResponse({
         "message": "Payment Complete"
     })
+
+
+def send_email(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        message = request.POST['message']
+        from_email = request.POST['from_email']
+        recipient_email = request.POST['recipient_email']
+        send_mail(subject, message, from_email, [recipient_email])
+        return redirect("send_email")
+
+    context = {"title": "Email"}
+    return render(request, "send-email.html", context)
+
+
+
 
