@@ -18,5 +18,5 @@ urlpatterns = [
     path("testimonial/", testimonial, name="testimonial"),
     path("delete/<int:id>/", delete, name="delete"),
     path("delete-contact/<int:id>/", delete_contact, name="delete_contact"),
-    path("", index, name="index"),
+    path("index/", index, name="index"),
 ]

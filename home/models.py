@@ -17,7 +17,7 @@ class Staff(models.Model):
     facebook = models.CharField(max_length=200, null=True)
     linkedin = models.CharField(max_length=200, null=True)
     instagram = models.CharField(max_length=200, null=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -28,7 +28,7 @@ class Items(models.Model):
     price = models.IntegerField()
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     digital = models.BooleanField(default=False)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -41,7 +41,7 @@ class Customer(models.Model):
     email = models.EmailField(max_length=50)
     phone_number = models.CharField(max_length=12)
     orders = models.ManyToManyField(Items, blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -107,7 +107,7 @@ class Testimonial(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=20, null=True)
     message = models.TextField(max_length=100, null=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -121,7 +121,7 @@ class Booking(models.Model):
     no_of_people = models.IntegerField(null=True)
     special_request = models.TextField(max_length=200, null=True)
     pre_order = models.ManyToManyField(Items, blank=True)
-    date_booked = models.DateTimeField(auto_now_add=True)
+    date_booked = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -133,7 +133,7 @@ class Contact(models.Model):
     email = models.EmailField(max_length=50)
     subject = models.CharField(max_length=100)
     message = models.TextField(max_length=300)
-    date_messaged = models.DateTimeField(auto_now_add=True)
+    date_messaged = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return f"{self.name}"

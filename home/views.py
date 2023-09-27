@@ -3,12 +3,9 @@ from .models import Staff, Items, Testimonial, Booking, Contact, OrderItem, Cust
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.mail import send_mail
-from django.conf import settings
 from django.http import JsonResponse
-
 import json
 import datetime
-from django.http import HttpResponse
 
 # Create your views here.
 
