@@ -1,5 +1,9 @@
+from pyexpat.errors import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect
-from .models import Staff, Items, Testimonial, Booking, Contact, OrderItem, Customer, Order, ShippingAddress
+from .utils import user_based_collaborative_filtering
+from .form import ReviewForm
+from .models import Staff, Items, Testimonial, Booking, Contact, OrderItem, Customer, Order, ShippingAddress, ReviewRating
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.mail import send_mail
@@ -11,7 +15,12 @@ import datetime
 
 
 def index(request):
-    context = {"items": Items.objects.all(),
+    if 'q' in request.GET:
+        q = request.GET['q']
+        items = Items.objects.filter(name__icontains= q)
+    else:
+        items = Items.objects.all()
+    context = {"items": items,
                "teams": Staff.objects.all(),
                "as": Testimonial.objects.all()
                }
@@ -49,7 +58,8 @@ def staff_page(request):
 
 def menu(request):
     context = {
-        "items": Items.objects.all()
+        "review_items": ReviewRating.objects.all(),
+        "items": Items.objects.all(),
     }
     return render(request, "menu.html", context)
 
@@ -296,6 +306,36 @@ def send_email(request):
     context = {"title": "Email"}
     return render(request, "send-email.html", context)
 
+def submit_review(request, item_id):
+    url = request.META.get("HTTP_REFERER")
+    
+    if request.method == "POST":
+        try:
+            review = ReviewRating.objects.get(user__id=request.user.id, item__id=item_id)
+            form = ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Thank you for updating your review!')
+            else:
+                messages.error(request, 'Failed to update the review. Please check your input.')
+        except ReviewRating.DoesNotExist:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.item_id = item_id  # Assuming 'product_id' is the correct field name
+                data.user_id = request.user.id
+                data.save()
+                messages.success(request, 'Thank you for your review!')
+            else:
+                messages.error(request, 'Failed to submit the review. Please check your input.')
+
+    return redirect(url)
 
 
 
+
+def recommend_items(request):
+    # Get recommendations for the current user
+    recommendations = user_based_collaborative_filtering(request.user)
+    context = {"recommendations": recommendations}
+    return render(request, 'recommend_items.html', context)

@@ -32,7 +32,15 @@ class Items(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
 
+class ReviewRating(models.Model):
+    item = models.ForeignKey(Items, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.user}"
 
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -80,6 +88,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     product = models.ForeignKey(Items, on_delete=models.SET_NULL, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
